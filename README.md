@@ -223,8 +223,8 @@ mistake started at, is in the design document (§9). Aggregate results are in
   case's path from that history. Failed attempts are also recorded with zero
   tokens, because the failure happens before the token counts can be
   returned. This is written up in full in the design document (§8).
-- **Case data travels inside the execution state.** The official cases are
-  about 0.7–1.3 KB, far under the 256 KB state limit. An S3 intake bucket is
+- **Case data travels inside the execution state.** A case is roughly 1 KB
+  of JSON, far under the 256 KB state limit. An S3 intake bucket is
   created by the stack but is not used in this build; it is there so large
   documents could later be passed by reference — a pointer in the state
   instead of the document itself — without changing the flow. See the design
