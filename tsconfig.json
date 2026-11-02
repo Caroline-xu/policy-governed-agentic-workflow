@@ -1,0 +1,1 @@
+{"compilerOptions":{"esModuleInterop":true,"forceConsistentCasingInFileNames":true,"lib":["ES2022"],"module":"commonjs","outDir":"dist","resolveJsonModule":true,"rootDir":".","skipLibCheck":true,"strict":true,"target":"ES2022"},"exclude":["node_modules","cdk.out"],"include":["bin/**/*.ts","lib/**/*.ts"]}

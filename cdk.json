@@ -1,0 +1,1 @@
+{"app":"node dist/bin/app.js","comment":"Run `npm run build` first (tsc) so dist/bin/app.js exists. See README.","context":{}}

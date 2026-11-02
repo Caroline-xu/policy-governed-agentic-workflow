@@ -1,0 +1,552 @@
+{
+  "Comment": "STAGE frozen graph (Appendix B) - Policy-Governed Agentic Workflow. MaxAttempts:1 in Retry = 1 retry after the first attempt = max 2 attempts per node (Appendix B default); exhaustion falls to Catch -> T10.",
+  "StartAt": "N01",
+  "States": {
+    "N01": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N01LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D01",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D01": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.facts.missing_fields[0]",
+          "IsPresent": true,
+          "Next": "T01"
+        }
+      ],
+      "Default": "N02"
+    },
+    "N02": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N02LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D02",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D02": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "And": [
+            {
+              "Variable": "$.coverage.within_coverage_period",
+              "BooleanEquals": true
+            },
+            {
+              "Variable": "$.coverage.benefit_covered",
+              "BooleanEquals": true
+            }
+          ],
+          "Next": "N03"
+        }
+      ],
+      "Default": "T02"
+    },
+    "N03": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N03LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D03",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D03": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.deadline.timely",
+          "BooleanEquals": true,
+          "Next": "D04"
+        }
+      ],
+      "Default": "T03"
+    },
+    "D04": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.facts.claim_type",
+          "StringEquals": "TRIP_CANCELLATION",
+          "Next": "N04"
+        },
+        {
+          "Variable": "$.facts.claim_type",
+          "StringEquals": "BAGGAGE_LOSS",
+          "Next": "N05"
+        },
+        {
+          "Variable": "$.facts.claim_type",
+          "StringEquals": "MEDICAL_EXPENSE",
+          "Next": "N06"
+        }
+      ],
+      "Default": "T10"
+    },
+    "N04": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N04LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D05",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "N05": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N05LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D05",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "N06": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N06LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D05",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D05": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.assessment.exclusion_outcome",
+          "StringEquals": "FULL",
+          "Next": "T04"
+        },
+        {
+          "Variable": "$.assessment.required_documents_present",
+          "BooleanEquals": false,
+          "Next": "T05"
+        }
+      ],
+      "Default": "N07"
+    },
+    "N07": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N07LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D06",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D06": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.payable.payable_amount",
+          "NumericGreaterThan": 0,
+          "Next": "N08"
+        }
+      ],
+      "Default": "T06"
+    },
+    "N08": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N08LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "D07",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "D07": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.fraud.indicators[0]",
+          "IsPresent": true,
+          "Next": "T07"
+        }
+      ],
+      "Default": "D08"
+    },
+    "D08": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.payable.payable_amount",
+          "NumericGreaterThan": 5000,
+          "Next": "H01"
+        }
+      ],
+      "Default": "N09"
+    },
+    "H01": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:dynamodb:putItem.waitForTaskToken",
+      "Parameters": {
+        "TableName": "${AuditTableName}",
+        "Item": {
+          "case_id": {
+            "S.$": "$.case_id"
+          },
+          "attempt_key": {
+            "S.$": "States.Format('{}#H01#token', $$.Execution.Id)"
+          },
+          "execution_id": {
+            "S.$": "$$.Execution.Id"
+          },
+          "node_id": {
+            "S": "H01"
+          },
+          "task_token": {
+            "S.$": "$$.Task.Token"
+          }
+        }
+      },
+      "ResultPath": "$.h01",
+      "Next": "H01Route",
+      "Comment": "Callback pause: execution waits here until an external actor (human adjuster, or the evaluation simulator) calls SendTaskSuccess with {\"decision\": \"APPROVE\"|\"REJECT\"}. The task token is stored in the audit table against the case."
+    },
+    "H01Route": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.h01.decision",
+          "StringEquals": "APPROVE",
+          "Next": "N09"
+        },
+        {
+          "Variable": "$.h01.decision",
+          "StringEquals": "REJECT",
+          "Next": "T08"
+        }
+      ],
+      "Default": "T10",
+      "Comment": "Appendix B folds this routing into H01 (APPROVE->N09, REJECT->T08); it is a separate Choice state only because ASL requires it. Any other decision value is a contract error -> T10."
+    },
+    "N09": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${N09LambdaArn}",
+        "Payload.$": "$"
+      },
+      "OutputPath": "$.Payload",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 1,
+          "BackoffRate": 2.0
+        }
+      ],
+      "Next": "T09",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "T10",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "T01": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T01",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T02": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T02",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T03": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T03",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T04": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T04",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T05": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T05",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T06": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T06",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T07": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T07",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T08": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T08",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T09": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T09",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    },
+    "T10": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "${TerminalLambdaArn}",
+        "Payload": {
+          "terminal_id": "T10",
+          "state.$": "$"
+        }
+      },
+      "OutputPath": "$.Payload",
+      "End": true
+    }
+  }
+}

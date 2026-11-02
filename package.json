@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "aws-cdk-lib": "^2.160.0",
+    "constructs": "^10.3.0"
+  },
+  "description": "Policy-governed agentic workflow on AWS (STAGE): Step Functions coordinator, per-node Lambda steps, Amazon Bedrock.",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "aws-cdk": "^2.160.0",
+    "typescript": "^5.6.0"
+  },
+  "name": "policy-governed-agentic-workflow",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy",
+    "synth": "cdk synth",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.0-skeleton"
+}

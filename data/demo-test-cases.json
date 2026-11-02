@@ -1,0 +1,690 @@
+{
+  "about": "Synthetic demo cases written for this project (fictional travel-insurance claims). Expected outcomes were derived by hand from the policy rules. The 30-case evaluation set used for the reported AWS results is not included in this repository.",
+  "cases": [
+    {
+      "case_id": "TC-101",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Alex Chen",
+        "claimed_amount": null,
+        "description": "I had stomach pain while travelling and went to a hospital.",
+        "incident_date": "2026-04-15",
+        "submission_date": null
+      },
+      "documents": [],
+      "expected": {
+        "final_status": "INCOMPLETE",
+        "path": [
+          "N01",
+          "D01",
+          "T01"
+        ],
+        "payable_amount": null,
+        "reason_codes": [
+          "INCOMPLETE_CLAIM"
+        ]
+      },
+      "note": "Synthetic stand-in case (created 2026-10-20, Appendix C format) targeting T01 INCOMPLETE. Missing submission_date, claimed_amount and any supporting document (Policy 1.1).",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1001",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-102",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Priya Shah",
+        "claimed_amount": 1200.0,
+        "description": "I was treated in an emergency room for a severe flu on 2026-04-05, just before my insured trip began.",
+        "incident_date": "2026-04-05",
+        "submission_date": "2026-05-01"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "City Hospital - Itemized Statement. Patient: Priya Shah. Treatment date 2026-04-05. Emergency consultation 400.00. IV fluids and medication 800.00. Total 1,200.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-06. Diagnosis: severe influenza, onset 2026-04-05. Patient treated and discharged the same day."
+        }
+      ],
+      "expected": {
+        "final_status": "DENIED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "T02"
+        ],
+        "payable_amount": null,
+        "reason_codes": [
+          "NOT_COVERED"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T02 NOT_COVERED: incident date 2026-04-05 is before coverage_start 2026-04-10 (Policy 2.1). Complete and otherwise valid.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1002",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-103",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Marco Ruiz",
+        "claimed_amount": 900.0,
+        "description": "I sprained my ankle on 2026-04-15 and was treated in an emergency room as an outpatient.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-07-20"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: Marco Ruiz. Treatment date 2026-04-15. Emergency consultation 300.00. X-ray 200.00. Ankle treatment and brace 400.00. Total 900.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-16. Diagnosis: sprained ankle, 2026-04-15. Patient was treated as an outpatient and discharged the same day. The patient was not admitted to hospital at any time."
+        }
+      ],
+      "expected": {
+        "final_status": "DENIED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "T03"
+        ],
+        "payable_amount": null,
+        "reason_codes": [
+          "LATE_FILING"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T03 LATE_FILING: filed 96 days after incident (verified: 2026-04-15 to 2026-07-20 = 96 days), no hospitalization documented, so the 90-day deadline in 3.1 applies.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1003",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-104",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Lena Fischer",
+        "claimed_amount": 1500.0,
+        "description": "I broke my arm on 2026-04-15. I filed late because I was recovering from surgery.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-08-12"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: Lena Fischer. Emergency consultation 400.00. Surgical repair of fractured arm 800.00. Imaging 300.00. Total 1,500.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-08-01. Diagnosis: fractured arm, injury date 2026-04-15. The patient was admitted to hospital from 2026-04-18 to 2026-04-22 for surgical repair and observation, then discharged."
+        }
+      ],
+      "expected": {
+        "final_status": "APPROVED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "D08",
+          "N09",
+          "T09"
+        ],
+        "payable_amount": 1500.0,
+        "reason_codes": []
+      },
+      "note": "Synthetic stand-in case for the 3.2 hospitalization extension: filed 119 days after incident (verified: 2026-04-15 to 2026-08-12 = 119 days) but the claimant was hospitalized 2026-04-18 to 2026-04-22, within 90 days of the incident, so the deadline is 180 days and the claim is timely. Expected APPROVED 1500.00.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1004",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-105",
+      "claim_form": {
+        "claim_type": "TRIP_CANCELLATION",
+        "claimant_name": "Sarah Kim",
+        "claimed_amount": 1800.0,
+        "description": "I cancelled my trip on 2026-04-12 and am claiming the non-refundable costs.",
+        "incident_date": "2026-04-12",
+        "submission_date": "2026-04-20"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "Supplier statement, 2026-04-12. Customer: Sarah Kim. Non-refundable prepaid flight and hotel costs: total 1,800.00 CAD. Booking is non-refundable."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Email from Sarah Kim to the supplier, 2026-04-12: I have changed my mind about this trip and decided not to travel. Please cancel my booking."
+        }
+      ],
+      "expected": {
+        "final_status": "DENIED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N04",
+          "D05",
+          "T04"
+        ],
+        "payable_amount": null,
+        "reason_codes": [
+          "EXCLUDED"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T04 EXCLUDED: trip cancelled because of a change of mind, which 4.2 lists as not covered. Documents are complete, so the outcome is a full exclusion, not missing documents (7.1 order).",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1005",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-18"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-106",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "David Lee",
+        "claimed_amount": 1100.0,
+        "description": "I had emergency surgery for appendicitis on 2026-04-16.",
+        "incident_date": "2026-04-16",
+        "submission_date": "2026-05-10"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: David Lee. Admission 2026-04-16. Emergency consultation 300.00. Appendectomy 800.00. Total 1,100.00 CAD equivalent."
+        }
+      ],
+      "expected": {
+        "final_status": "PENDING_DOCUMENTS",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "T05"
+        ],
+        "payable_amount": null,
+        "reason_codes": [
+          "MISSING_DOCUMENTS"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T05 PENDING_DOCUMENTS / MISSING_DOCUMENTS: medical claim with an itemized bill but no physician report, which 6.3 requires. Nothing is excluded, so D05 routes to T05 after the FULL-exclusion check.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1006",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-107",
+      "claim_form": {
+        "claim_type": "BAGGAGE_LOSS",
+        "claimant_name": "Emma Wilson",
+        "claimed_amount": 80.0,
+        "description": "The airline lost my suitcase on 2026-04-15.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-05-05"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "Property Irregularity Report, carrier, 2026-04-15. Passenger: Emma Wilson. One suitcase lost and not recovered."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Claimant item list, 2026-05-05. Lost items: one suitcase, value 80.00 CAD. No other items."
+        }
+      ],
+      "expected": {
+        "final_status": "DENIED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N05",
+          "D05",
+          "N07",
+          "D06",
+          "T06"
+        ],
+        "payable_amount": 0.0,
+        "reason_codes": [
+          "BELOW_DEDUCTIBLE"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T06 BELOW_DEDUCTIBLE: baggage claim with one eligible item of 80.00 (no receipt needed, at or below 200 per 5.1). Eligible 80.00 minus the 100.00 deductible in 5.3 / 8.1 floors to 0.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1007",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-108",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "James Park",
+        "claimed_amount": 800.0,
+        "description": "I was treated for severe food poisoning on 2026-04-15.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-05-10"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: James Park. Treatment date 2026-04-15. Emergency consultation 300.00. Treatment and medication 500.00. Total 800.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-16. Diagnosis: severe food poisoning, onset 2026-04-15. Patient treated and discharged the same day."
+        }
+      ],
+      "expected": {
+        "final_status": "REFERRED_SIU",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "T07"
+        ],
+        "payable_amount": 800.0,
+        "reason_codes": [
+          "FRAUD_INDICATOR"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T07 REFERRED_SIU: otherwise payable medical claim (800.00), but prior_claims_last_12_months is 3, which triggers fraud indicator 9.1(c) (more than two prior claims). Expected payable_amount records the amount computed at N07 before referral - state this convention in the design document.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1008",
+        "prior_claims_last_12_months": 3,
+        "purchase_date": "2026-02-01",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-109",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Olivia Brown",
+        "claimed_amount": 6500.0,
+        "description": "I had emergency surgery on 2026-04-15.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-05-20"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: Olivia Brown. Admission 2026-04-15. Emergency consultation 500.00. Surgery 4,800.00. Imaging 700.00. Medication 500.00. Total 6,500.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-16. Diagnosis: acute appendicitis, onset 2026-04-15. Emergency surgery performed the same day. No pre-existing conditions recorded."
+        }
+      ],
+      "expected": {
+        "final_status": "ADJUSTER_REJECTED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "D08",
+          "H01",
+          "T08"
+        ],
+        "payable_amount": 6500.0,
+        "reason_codes": [
+          "ADJUSTER_DECISION"
+        ]
+      },
+      "note": "Synthetic stand-in case targeting T08 ADJUSTER_REJECTED: payable 6,500.00 is above the 5,000 auto-approval threshold (10.2), no fraud indicators (policy bought 44 days before the incident, so 9.1(a) does not apply even though the amount exceeds 3,000), and the simulated adjuster rejects.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1009",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": "REJECT"
+    },
+    {
+      "case_id": "TC-110",
+      "claim_form": {
+        "claim_type": "MEDICAL_EXPENSE",
+        "claimant_name": "Noah Tremblay",
+        "claimed_amount": 6800.0,
+        "description": "I had emergency surgery on 2026-04-15.",
+        "incident_date": "2026-04-15",
+        "submission_date": "2026-05-20"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: Noah Tremblay. Admission 2026-04-15. Emergency consultation 600.00. Surgery 5,000.00. Imaging 800.00. Medication 400.00. Total 6,800.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-16. Diagnosis: acute appendicitis, onset 2026-04-15. Emergency surgery performed the same day. No pre-existing conditions recorded."
+        }
+      ],
+      "expected": {
+        "final_status": "APPROVED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "D08",
+          "H01",
+          "N09",
+          "T09"
+        ],
+        "payable_amount": 6800.0,
+        "reason_codes": []
+      },
+      "note": "Synthetic stand-in case for H01 approve: payable 6,800.00, above 5,000, simulated adjuster approves, so the path continues H01 -> N09 -> T09 APPROVED. Note for Part 4: if the Section 10 threshold were raised to 7,500, this exact case would bypass H01 entirely - a concrete before/after example for the change-management walkthrough.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1010",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": "APPROVE"
+    },
+    {
+      "case_id": "TC-111",
+      "claim_form": {
+        "claim_type": "BAGGAGE_LOSS",
+        "claimant_name": "Nora Ali",
+        "claimed_amount": 1350.0,
+        "description": "Claim submitted on 2026-04-16 during my trip. See attached documents.",
+        "incident_date": "2026-04-16",
+        "submission_date": "2026-05-10"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "General Hospital - Itemized Statement. Patient: Nora Ali. Treatment date 2026-04-16. Emergency consultation 350.00. Kidney stone treatment 1,000.00. Total 1,350.00 CAD equivalent."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Physician report, 2026-04-17. Diagnosis: kidney stone, sudden onset 2026-04-16. Emergency treatment provided. No pre-existing conditions recorded."
+        }
+      ],
+      "expected": {
+        "final_status": "APPROVED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N06",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "D08",
+          "N09",
+          "T09"
+        ],
+        "payable_amount": 1350.0,
+        "reason_codes": []
+      },
+      "note": "Synthetic stand-in case for Policy 1.2 claim-type precedence: the form says BAGGAGE_LOSS but the documents describe a medical expense, so the resolved claim type is MEDICAL_EXPENSE and D04 must route to N06, not N05. A monolithic baseline is likely to follow the form and take the wrong branch - a good chain-error comparison case.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1011",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-10"
+      },
+      "simulated_adjuster_decision": null
+    },
+    {
+      "case_id": "TC-112",
+      "claim_form": {
+        "claim_type": "TRIP_CANCELLATION",
+        "claimant_name": "Ethan Wright",
+        "claimed_amount": 5000.0,
+        "description": "I developed pneumonia on 2026-04-11 and my doctor said I cannot travel, so I cancelled my trip.",
+        "incident_date": "2026-04-11",
+        "submission_date": "2026-04-20"
+      },
+      "documents": [
+        {
+          "doc_id": "D1",
+          "text": "Supplier statement, 2026-04-11. Customer: Ethan Wright. Non-refundable prepaid costs: flight 1,800.00, hotel 3,200.00. Total non-refundable prepaid costs 5,000.00 CAD."
+        },
+        {
+          "doc_id": "D2",
+          "text": "Medical note, 2026-04-11. Patient: Ethan Wright. Diagnosis: pneumonia, onset 2026-04-11. The patient is medically unfit to travel and must not travel."
+        }
+      ],
+      "expected": {
+        "final_status": "APPROVED",
+        "path": [
+          "N01",
+          "D01",
+          "N02",
+          "D02",
+          "N03",
+          "D03",
+          "D04",
+          "N04",
+          "D05",
+          "N07",
+          "D06",
+          "N08",
+          "D07",
+          "D08",
+          "N09",
+          "T09"
+        ],
+        "payable_amount": 5000.0,
+        "reason_codes": []
+      },
+      "note": "Synthetic stand-in case for the Section 10 boundary: payable is exactly 5,000.00. Policy 10.1 approves amounts up to and including 5,000 automatically, and D08 routes to H01 only when payable_amount > 5000, so this case must NOT pass through H01. Trip cancellation for sickness (4.1), both 4.3 documents present, no deductible (4.4), at the 5,000 trip cancellation limit.",
+      "policy": {
+        "coverage_end": "2026-04-24",
+        "coverage_start": "2026-04-10",
+        "covered_benefits": [
+          "TRIP_CANCELLATION",
+          "BAGGAGE_LOSS",
+          "MEDICAL_EXPENSE"
+        ],
+        "medical_limit": 10000,
+        "policy_number": "NW-1012",
+        "prior_claims_last_12_months": 0,
+        "purchase_date": "2026-03-02",
+        "trip_cancellation_limit": 5000,
+        "trip_start_date": "2026-04-18"
+      },
+      "simulated_adjuster_decision": null
+    }
+  ]
+}

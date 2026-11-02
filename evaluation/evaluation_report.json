@@ -1,0 +1,32 @@
+{
+  "note": "Aggregate results from the full evaluation run on AWS over the exercise's 30-case set (the set itself is not included in this repository). Per-case rows omitted.",
+  "graph": {
+    "cases": 30,
+    "runs": 90,
+    "pass1": "26/30",
+    "pass3": "26/30",
+    "field_accuracy": {
+      "status": 0.8667,
+      "reason_codes": 0.8667,
+      "payable": 0.8667,
+      "path": 0.8667
+    },
+    "mean_input_tokens": 2919.4,
+    "mean_output_tokens": 828.1,
+    "mean_latency_s": 20.1
+  },
+  "baseline": {
+    "cases": 30,
+    "runs": 90,
+    "pass1": "15/30",
+    "pass3": "15/30",
+    "field_accuracy": {
+      "status": 0.7,
+      "reason_codes": 0.7333,
+      "payable": 0.7667
+    },
+    "mean_input_tokens": 1512.7,
+    "mean_output_tokens": 563.2,
+    "mean_latency_s": 6.8
+  }
+}
